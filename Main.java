@@ -3,13 +3,15 @@ import java.util.Scanner;
 public class Main {
 
  public static void main(String[] args) {
+
          try {
              PacManGame snk = new PacManGame(9, 9);
+             snk.start();
              Scanner scan = new Scanner(System.in);
              while (true) {
                  System.out.println(snk.toString());
                  while (snk.currentStatus == PacManGame.Status.IN_GAME) {
-                     int move = Integer.parseInt(scan.nextLine());
+                     int move = scan.nextInt();
                      switch (move) {
                          case 8:
                              snk.move(PacManGame.Move.TOP);
