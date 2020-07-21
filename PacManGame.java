@@ -1,7 +1,6 @@
-import javax.management.loading.PrivateClassLoader;
 import java.util.LinkedList;
 
-public class PacManGame {
+public class PacManGame extends Thread {
 
     //private int x, y;
     int grid[][] = {
@@ -20,6 +19,11 @@ public class PacManGame {
             {2, 0, 2, 2, 0, 0, 2, 0, 2, 2, 2, 2, 0, 2},
             {2, 0, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2}};
 
+    public PacManGame() {
+
+    }
+
+
     enum Move {TOP, BOTTOM, LEFT, RIGHT} //mosse
 
     enum Status {IN_GAME, OVER, WIN} //stato del gioco
@@ -27,22 +31,33 @@ public class PacManGame {
     public static Status currentStatus = Status.IN_GAME; // stato attuale del gioco
     private int point;
     private int smile;
+    private  Move lastMove=Move.RIGHT;
 
     LinkedList<Coord> face = new LinkedList<>();
     public int m;
     public int n;
 
     public PacManGame(int n, int m) {
-
-
-        this.n = n;
-        this.m = m;
-        face.addFirst(new Coord(1, 2));
+     this.n = n;
+     this.m = m;
+     face.addFirst(new Coord(1, 2));
+     this.lastMove=lastMove;
 }
+    @Override
+    public void run(){
+        try {
+            while(currentStatus==Status.IN_GAME){
+                Thread.sleep(1000);
+                this.move(this.lastMove);
+                System.out.println(this.toString());
+            }
+        } catch (InterruptedException e) { }
+    }
     public void move(Move m) {
         //for (int x=0; x < this.grid.length; x++){
             //for (int y=0; y < this.grid[x].length; y++){
                 Coord face = this.face.getFirst();
+                this.lastMove = m;
                 if (m == Move.RIGHT) {
                         this.face.addFirst(new Coord(face.getX(), face.getY()+1));
                     }
